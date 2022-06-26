@@ -17,5 +17,6 @@ func (v *validationError) append(str string) {
 }
 
 const (
-	invalidTagErr = `invalid tag "%s", expected one of: %s`
+	invalidTagErr  = `invalid tag "%s", expected one of: %s`
+	invalidTypeErr = `expected "%s", received "%s"`
 )
