@@ -16,16 +16,17 @@ type (
 	// ParsedTags is a struct that store all information needed
 	// to get the yaORM tags from a struct
 	ParsedTags struct {
-		parsedTags map[string][]parsedTag
+		ParsedTags map[string][]ParsedTag
 		rawSlice   []rawTag
-		valueOf    reflect.Value
-		typeOf     reflect.Type
+		ValueOf    reflect.Value
+		TypeOf     reflect.Type
 		Error      error
 	}
 
-	parsedTag struct {
-		tagType tag
-		value   string
+	// ParsedTag is one of the yaORM tags already parsed.
+	ParsedTag struct {
+		TagType tag
+		Value   string
 	}
 
 	rawTag struct {
@@ -46,8 +47,8 @@ func ParseTags(v any) (p *ParsedTags) {
 		return
 	}
 
-	p.typeOf = typeOf
-	p.valueOf = reflect.ValueOf(v)
+	p.TypeOf = typeOf
+	p.ValueOf = reflect.ValueOf(v)
 
 	return p.
 		getRawTags().
@@ -62,12 +63,12 @@ func (p *ParsedTags) getRawTags() *ParsedTags {
 
 	var field reflect.StructField
 
-	for i := 0; i < p.valueOf.NumField(); i++ {
-		field = p.typeOf.Field(i)
+	for i := 0; i < p.ValueOf.NumField(); i++ {
+		field = p.TypeOf.Field(i)
 		p.rawSlice = append(p.rawSlice, rawTag{
 			rawStr: field.Tag.Get(yaORMTag),
 			field:  field,
-			value:  p.valueOf.Field(i),
+			value:  p.ValueOf.Field(i),
 		})
 	}
 	return p
@@ -78,23 +79,23 @@ func (p *ParsedTags) parseRawTags() *ParsedTags {
 		return p
 	}
 
-	p.parsedTags = map[string][]parsedTag{}
+	p.ParsedTags = map[string][]ParsedTag{}
 
 	for _, wholeTag := range p.rawSlice {
 		wholeTagSlice := strings.Split(wholeTag.rawStr, tagSep)
-		parsedTagSlice := []parsedTag{}
+		parsedTagSlice := []ParsedTag{}
 		for _, tag := range wholeTagSlice {
 			splittedTag := strings.Split(tag, ":")
-			pTag := parsedTag{}
+			pTag := ParsedTag{}
 			if len(splittedTag) == 1 {
-				pTag.tagType = strTagMap[splittedTag[0]]
+				pTag.TagType = strTagMap[splittedTag[0]]
 			} else {
-				pTag.tagType = strTagMap[splittedTag[0]]
-				pTag.value = splittedTag[1]
+				pTag.TagType = strTagMap[splittedTag[0]]
+				pTag.Value = splittedTag[1]
 			}
 			parsedTagSlice = append(parsedTagSlice, pTag)
 		}
-		p.parsedTags[wholeTag.field.Name] = parsedTagSlice
+		p.ParsedTags[wholeTag.field.Name] = parsedTagSlice
 	}
 
 	return p
