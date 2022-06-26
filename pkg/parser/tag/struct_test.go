@@ -12,18 +12,19 @@ func TestParseTags(t *testing.T) {
 	t.Run("Not Struct", func(t *testing.T) {
 		require := require.New(t)
 
-		var expectedMap map[string]string
-		expectedError := fmt.Sprintf(invalidTypeErr, reflect.Struct.String(), "int")
+		expected := ParsedTags{
+			Error: fmt.Errorf(invalidTypeErr, reflect.Struct.String(), "int"),
+		}
 
 		i := int(1)
 
-		actualMap, actualErr := ParseTags(i)
+		actualParsedTags := ParseTags(i)
 
-		if actualErr == nil {
-			require.NotNil(actualErr)
+		if actualParsedTags.Error == nil {
+			require.NotNil(actualParsedTags.Error)
 		}
 
-		require.Equal(expectedMap, actualMap)
-		require.EqualError(actualErr, expectedError)
+		require.EqualError(actualParsedTags.Error, expected.Error.Error())
 	})
+
 }
