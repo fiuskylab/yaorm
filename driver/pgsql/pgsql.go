@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/fiuskylab/yaorm/driver"
+	// Importing as blank to apply PQ interface.
 	_ "github.com/lib/pq"
 )
 
@@ -24,6 +25,11 @@ func Open(dsn driver.DSN) (driver.Driver, error) {
 	}
 
 	return p, nil
+}
+
+// Migrate will receive a slice of models to migrate
+func (p *PGSQL) Migrate(models ...any) error {
+	return nil
 }
 
 func (p *PGSQL) setConnection() error {
