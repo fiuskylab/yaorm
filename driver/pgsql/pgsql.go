@@ -38,5 +38,5 @@ func (p *PGSQL) setConnection() error {
 
 // Ping will check the connection with Postgre DB.
 func (p *PGSQL) Ping() error {
-	return nil
+	return p.db.Ping()
 }
