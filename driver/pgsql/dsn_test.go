@@ -9,7 +9,7 @@ import (
 func TestString(t *testing.T) {
 	t.Run("Empty DSN", func(t *testing.T) {
 		require := require.New(t)
-		dsn := PGDSN{}
+		dsn := DSN{}
 
 		actual := dsn.String()
 		expected := "postgresql://:@:0/"
@@ -19,7 +19,7 @@ func TestString(t *testing.T) {
 
 	t.Run("Filled DSN", func(t *testing.T) {
 		require := require.New(t)
-		dsn := PGDSN{
+		dsn := DSN{
 			User:     "root",
 			Password: "root",
 		}
@@ -32,7 +32,7 @@ func TestString(t *testing.T) {
 
 	t.Run("Filled DSN", func(t *testing.T) {
 		require := require.New(t)
-		dsn := PGDSN{
+		dsn := DSN{
 			User:     "root",
 			Password: "root",
 			Host:     "localhost",
@@ -47,7 +47,7 @@ func TestString(t *testing.T) {
 
 	t.Run("Filled DSN", func(t *testing.T) {
 		require := require.New(t)
-		dsn := PGDSN{
+		dsn := DSN{
 			User:     "root",
 			Password: "root",
 			Host:     "localhost",
@@ -63,7 +63,7 @@ func TestString(t *testing.T) {
 
 	t.Run("Filled DSN", func(t *testing.T) {
 		require := require.New(t)
-		dsn := PGDSN{
+		dsn := DSN{
 			User:     "root",
 			Password: "root",
 			Host:     "localhost",
@@ -82,7 +82,7 @@ func TestString(t *testing.T) {
 
 	t.Run("Filled DSN", func(t *testing.T) {
 		require := require.New(t)
-		dsn := PGDSN{
+		dsn := DSN{
 			User:     "root",
 			Password: "root",
 			Host:     "localhost",

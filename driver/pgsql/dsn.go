@@ -5,9 +5,9 @@ import (
 	"strings"
 )
 
-// PGDSN is the DSN struct for storing data to
+// DSN is the DSN struct for storing data to
 // set up a connection with PostgreSQL DB.
-type PGDSN struct {
+type DSN struct {
 	User     string
 	Password string
 	Host     string
@@ -20,7 +20,7 @@ const (
 	dsn = `postgresql://%s@%s/%s%s`
 )
 
-func (p *PGDSN) String() string {
+func (p *DSN) String() string {
 	userSpec := strings.Join([]string{p.User, p.Password}, ":")
 	hostSpec := strings.Join([]string{p.Host, fmt.Sprintf("%d", p.Port)}, ":")
 	params := ""
