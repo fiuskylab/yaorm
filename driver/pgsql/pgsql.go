@@ -10,14 +10,16 @@ import (
 
 // PGSQL is PostgreSQL driver
 type PGSQL struct {
-	dsn string
-	db  *sql.DB
+	dsn    string
+	db     *sql.DB
+	schema string
 }
 
 // Open sets up a Connection with PostgreSQL DB.
-func Open(dsn driver.DSN) (driver.Driver, error) {
+func Open(dsn driver.DSN, schema string) (driver.Driver, error) {
 	p := &PGSQL{
-		dsn: dsn.String(),
+		dsn:    dsn.String(),
+		schema: schema,
 	}
 
 	if err := p.setConnection(); err != nil {

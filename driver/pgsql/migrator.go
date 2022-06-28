@@ -12,16 +12,20 @@ type migrator struct {
 	db        *sql.DB
 	model     any
 	tableName string
+	schema    string
+	err       error
 }
 
-func migrate(model any, db *sql.DB) error {
+func migrate(model any, db *sql.DB, schema string) error {
 	m := &migrator{
-		db:    db,
-		model: model,
+		db:     db,
+		model:  model,
+		schema: schema,
 	}
 
 	m.
-		setTableName()
+		setTableName().
+		checkTable()
 
 	return nil
 }
@@ -40,5 +44,17 @@ func (m *migrator) setTableName() *migrator {
 	}
 
 	m.tableName = tableName
+	return m
+}
+
+const ()
+
+func (m *migrator) checkTable() *migrator {
+	query := fmt.Sprintf(
+		checkTable,
+		m.schema,
+		m.tableName,
+	)
+
 	return m
 }
