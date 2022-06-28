@@ -16,7 +16,6 @@ type (
 )
 
 func (cs columns) toSliceStr() (slice []string) {
-
 	for _, c := range cs {
 		slice = append(slice, fmt.Sprintf("%s %s", c.name, c.dataType))
 	}
@@ -24,8 +23,7 @@ func (cs columns) toSliceStr() (slice []string) {
 	return
 }
 
-func getColums(t reflect.Type, v reflect.Value) (cs columns) {
-
+func getColums(t reflect.Type) (cs columns) {
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
 		dataType, _ := dataTypes[field.Type.Kind().String()]
