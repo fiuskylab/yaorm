@@ -31,6 +31,9 @@ func Open(dsn driver.DSN, schema string) (driver.Driver, error) {
 
 // Migrate will receive a slice of models to migrate
 func (p *PGSQL) Migrate(models ...any) error {
+	for _, model := range models {
+		migrate(model, p.db, p.schema)
+	}
 	return nil
 }
 
