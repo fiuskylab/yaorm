@@ -10,10 +10,12 @@ import (
 
 type migrator struct {
 	db        *sql.DB
-	model     any
-	tableName string
-	schema    string
 	err       error
+	model     any
+	schema    string
+	stmt      *sql.Stmt
+	tableName string
+	tx        *sql.Tx
 }
 
 func migrate(model any, db *sql.DB, schema string) error {
@@ -24,13 +26,24 @@ func migrate(model any, db *sql.DB, schema string) error {
 	}
 
 	m.
+		begin().
 		setTableName().
-		checkTable()
+		buildCheckStmt().
+		runCheckStmt()
 
-	return nil
+	return m.err
+}
+
+// begin will setup the sql.Tx
+func (m *migrator) begin() *migrator {
+	m.tx, m.err = m.db.Begin()
+	return m
 }
 
 func (m *migrator) setTableName() *migrator {
+	if m.err != nil {
+		return m
+	}
 	splitted := strings.
 		Split(
 			fmt.Sprintf("%T", m.model),
@@ -47,14 +60,28 @@ func (m *migrator) setTableName() *migrator {
 	return m
 }
 
-const ()
+func (m *migrator) buildCheckStmt() *migrator {
+	if m.err != nil {
+		return m
+	}
 
-func (m *migrator) checkTable() *migrator {
 	query := fmt.Sprintf(
 		checkTable,
 		m.schema,
 		m.tableName,
 	)
 
+	m.stmt, m.err = m.tx.Prepare(query)
+
+	if m.err != nil {
+		return m
+	}
+
 	return m
+}
+
+func (m *migrator) runCheckStmt() *migrator {
+	if m.err != nil {
+		return m
+	}
 }
