@@ -26,7 +26,7 @@ func (cs columns) toSliceStr() (slice []string) {
 func getColums(t reflect.Type) (cs columns) {
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
-		dataType, _ := dataTypes[field.Type.Kind().String()]
+		dataType := dataTypes[field.Type.String()]
 		cs = append(cs, column{
 			name:     strings.ToLower(field.Name),
 			dataType: dataType,
