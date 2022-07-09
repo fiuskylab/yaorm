@@ -3,7 +3,8 @@ package pgsql
 import (
 	"fmt"
 	"reflect"
-	"strings"
+
+	"github.com/fiuskylab/yaorm/pkg/helpers"
 )
 
 type (
@@ -27,8 +28,9 @@ func getColums(t reflect.Type) (cs columns) {
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
 		dataType := dataTypes[field.Type.String()]
+		field.Name = helpers.ParseColumnName(field.Name)
 		cs = append(cs, column{
-			name:     strings.ToLower(field.Name),
+			name:     field.Name,
 			dataType: dataType,
 		})
 	}
