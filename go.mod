@@ -3,6 +3,7 @@ module github.com/fiuskylab/yaorm
 go 1.18
 
 require (
+	github.com/gertd/go-pluralize v0.2.1
 	github.com/lib/pq v1.10.6
 	github.com/stretchr/testify v1.7.5
 )
