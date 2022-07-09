@@ -16,7 +16,7 @@ func main() {
 		Params: map[string]string{
 			"sslmode": "disable",
 		},
-	})
+	}, "public")
 
 	if err != nil {
 		// handle err
