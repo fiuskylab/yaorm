@@ -8,6 +8,8 @@ import (
 	"strings"
 	"text/template"
 
+	// blank import to apply the Postgres library.
+	"github.com/fiuskylab/yaorm/pkg/helpers"
 	_ "github.com/lib/pq"
 )
 
@@ -91,12 +93,12 @@ func (m *migrator) fillCreateTable() *migrator {
 		return m
 	}
 
-	cs := getColums(reflect.TypeOf(m.model)).
+	cols := getColums(reflect.TypeOf(m.model)).
 		toSliceStr()
 
 	m.buf = new(bytes.Buffer)
 
-	m.err = m.template.Execute(m.buf, cs)
+	m.err = m.template.Execute(m.buf, cols)
 
 	return m
 }
@@ -118,13 +120,7 @@ func (m *migrator) setTableName() *migrator {
 			".",
 		)
 
-	tableName := splitted[len(splitted)-1]
-	tableName = strings.ToLower(tableName)
-	if tableName[len(tableName)-1] != 's' {
-		tableName += "s"
-	}
-
-	m.tableName = tableName
+	m.tableName = helpers.ParseColumnName(splitted[len(splitted)-1])
 	return m
 }
 
